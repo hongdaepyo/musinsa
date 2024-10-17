@@ -6,5 +6,6 @@ import java.util.List;
 public interface ProductRepository {
 
     List<Product> findAllLowestPriceProductsByCategory();
+    List<Product> findAllLowestPriceProductsByBrandId(Long brandId);
     Product save(Product product);
 }

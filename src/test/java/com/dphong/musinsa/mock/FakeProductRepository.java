@@ -24,17 +24,29 @@ public class FakeProductRepository implements ProductRepository {
     }
 
     @Override
+    public List<Product> findAllLowestPriceProductsByBrandId(Long brandId) {
+        return data.stream()
+                .filter(product -> product.getBrand().getId().equals(brandId))
+                .collect(Collectors.groupingBy(Product::getCategory, Collectors.minBy(Comparator.comparingInt(Product::getPrice))))
+                .values().stream()
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .sorted(Comparator.comparingInt(product -> product.getCategory().getOrder()))
+                .toList();
+    }
+
+    @Override
     public Product save(Product product) {
         if (product.getId() == null || product.getId() == 0) {
-            Product.builder()
+            Product newProduct = Product.builder()
                     .id(autoIncrementId.getAndIncrement())
                     .price(product.getPrice())
                     .name(product.getName())
                     .brand(product.getBrand())
                     .category(product.getCategory())
                     .build();
-            data.add(product);
-            return product;
+            data.add(newProduct);
+            return newProduct;
         } else {
             data.removeIf(it -> Objects.equals(it.getId(), product.getId()));
             data.add(product);
