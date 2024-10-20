@@ -87,4 +87,42 @@ class ProductRepositoryImplTest {
         assertThat(products.get(1).getName()).isEqualTo("product3");
         assertThat(products.getLast().getName()).isEqualTo("product6");
     }
+
+    @Test
+    void 카테고리의_최저가_상품을_조회한다() {
+        // given
+        List.of(
+                Product.builder().price(1000).name("product1").category(ProductCategory.TOP).build(),
+                Product.builder().price(2000).name("product2").category(ProductCategory.TOP).build(),
+                Product.builder().price(3000).name("product3").category(ProductCategory.HAT).build(),
+                Product.builder().price(4000).name("product4").category(ProductCategory.HAT).build()
+        ).forEach(productRepository::save);
+
+        // when
+        Product product = productRepository.findLowestPriceProductByCategory(ProductCategory.TOP);
+
+        // then
+        assertThat(product.getName()).isEqualTo("product1");
+        assertThat(product.getCategory()).isEqualTo(ProductCategory.TOP);
+        assertThat(product.getPrice()).isEqualTo(1000);
+    }
+
+    @Test
+    void 카테고리의_최고가_상품을_조회한다() {
+        // given
+        List.of(
+                Product.builder().price(1000).name("product1").category(ProductCategory.TOP).build(),
+                Product.builder().price(2000).name("product2").category(ProductCategory.TOP).build(),
+                Product.builder().price(3000).name("product3").category(ProductCategory.HAT).build(),
+                Product.builder().price(4000).name("product4").category(ProductCategory.HAT).build()
+        ).forEach(productRepository::save);
+
+        // when
+        Product product = productRepository.findHighestPriceProductByCategory(ProductCategory.HAT);
+
+        // then
+        assertThat(product.getName()).isEqualTo("product4");
+        assertThat(product.getCategory()).isEqualTo(ProductCategory.HAT);
+        assertThat(product.getPrice()).isEqualTo(4000);
+    }
 }

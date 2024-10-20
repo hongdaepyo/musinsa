@@ -1,5 +1,6 @@
 package com.dphong.musinsa.domain;
 
+import java.util.Arrays;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -18,4 +19,11 @@ public enum ProductCategory {
 
     private final int order;
     private final String description;
+
+    public static ProductCategory findByDescription(String description) {
+        return Arrays.stream(values())
+                .filter(it -> it.description.equals(description))
+                .findFirst()
+                .orElseThrow();
+    }
 }

@@ -2,10 +2,8 @@ package com.dphong.musinsa.service;
 
 import com.dphong.musinsa.domain.Brand;
 import com.dphong.musinsa.domain.Product;
-import com.dphong.musinsa.model.response.product.BrandLowestPriceProductResponse;
-import com.dphong.musinsa.model.response.product.CategoryProductResponse;
-import com.dphong.musinsa.model.response.product.ProductResponse;
-import com.dphong.musinsa.model.response.product.ProductsByCategoryResponse;
+import com.dphong.musinsa.domain.ProductCategory;
+import com.dphong.musinsa.model.response.product.*;
 import com.dphong.musinsa.repository.brand.BrandRepository;
 import com.dphong.musinsa.repository.product.ProductRepository;
 import java.util.List;
@@ -37,10 +35,18 @@ public class ProductQueryService {
     public BrandLowestPriceProductResponse getLowestPriceProductsByBrand(Long brandId) {
         Brand brand = brandRepository.findByIdOrNull(brandId);
         List<Product> products = productRepository.findAllLowestPriceProductsByBrandId(brand.getId());
-        List<CategoryProductResponse> categoryProducts = products.stream()
-                .map(product -> new CategoryProductResponse(product.getCategory().getDescription(), product.getName(), product.getPrice()))
-                .toList();
+        List<CategoryProductResponse> categoryProducts = products.stream().map(CategoryProductResponse::from).toList();
         int totalPrice = products.stream().mapToInt(Product::getPrice).sum();
         return new BrandLowestPriceProductResponse(brand.getName(), categoryProducts, totalPrice);
+    }
+
+    public ProductByCategoryNameResponse getProductsByCategory(ProductCategory category) {
+        Product lowestPriceProduct = productRepository.findLowestPriceProductByCategory(category);
+        Product highestPriceProduct = productRepository.findHighestPriceProductByCategory(category);
+        return new ProductByCategoryNameResponse(
+                category.getDescription(),
+                List.of(BrandProductResponse.from(lowestPriceProduct)),
+                List.of(BrandProductResponse.from(highestPriceProduct))
+        );
     }
 }

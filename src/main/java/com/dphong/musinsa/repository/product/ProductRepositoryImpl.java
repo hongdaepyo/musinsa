@@ -1,6 +1,7 @@
 package com.dphong.musinsa.repository.product;
 
 import com.dphong.musinsa.domain.Product;
+import com.dphong.musinsa.domain.ProductCategory;
 import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,16 @@ public class ProductRepositoryImpl implements ProductRepository {
         return productJpaRepository.findAllLowestPriceProductsByBrandId(brandId).stream()
                 .sorted(Comparator.comparingInt(product -> product.getCategory().getOrder()))
                 .toList();
+    }
+
+    @Override
+    public Product findLowestPriceProductByCategory(ProductCategory category) {
+        return productJpaRepository.findTopByCategoryOrderByPrice(category);
+    }
+
+    @Override
+    public Product findHighestPriceProductByCategory(ProductCategory category) {
+        return productJpaRepository.findTopByCategoryOrderByPriceDesc(category);
     }
 
     @Override

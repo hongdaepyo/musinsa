@@ -7,10 +7,7 @@ import com.dphong.musinsa.domain.Product;
 import com.dphong.musinsa.domain.ProductCategory;
 import com.dphong.musinsa.mock.FakeBrandRepository;
 import com.dphong.musinsa.mock.FakeProductRepository;
-import com.dphong.musinsa.model.response.product.BrandLowestPriceProductResponse;
-import com.dphong.musinsa.model.response.product.CategoryProductResponse;
-import com.dphong.musinsa.model.response.product.ProductResponse;
-import com.dphong.musinsa.model.response.product.ProductsByCategoryResponse;
+import com.dphong.musinsa.model.response.product.*;
 import com.dphong.musinsa.repository.brand.BrandRepository;
 import com.dphong.musinsa.repository.product.ProductRepository;
 import java.util.List;
@@ -84,5 +81,26 @@ class ProductQueryServiceTest {
                         new CategoryProductResponse(ProductCategory.BAG.getDescription(), "product6", 5000)
                 );
         assertThat(response.totalAmount()).isEqualTo(10000);
+    }
+
+    @Test
+    void 카테고리의_최저가_최고가_상품을_조회한다() {
+        // given
+        Brand brand = brandRepository.save(Brand.builder().id(1L).name("brand").build());
+        List.of(
+                Product.builder().price(1000).name("product1").category(ProductCategory.TOP).brand(brand).build(),
+                Product.builder().price(2000).name("product2").category(ProductCategory.TOP).brand(brand).build(),
+                Product.builder().price(3000).name("product3").category(ProductCategory.TOP).brand(brand).build(),
+                Product.builder().price(3000).name("product4").category(ProductCategory.HAT).brand(brand).build(),
+                Product.builder().price(4000).name("product5").category(ProductCategory.HAT).brand(brand).build()
+        ).forEach(productRepository::save);
+
+        // when
+        ProductByCategoryNameResponse response = service.getProductsByCategory(ProductCategory.TOP);
+
+        // then
+        assertThat(response.categoryName()).isEqualTo("상의");
+        assertThat(response.lowestPrice().getFirst()).isEqualTo(new BrandProductResponse(brand.getName(), 1000));
+        assertThat(response.highestPrice().getFirst()).isEqualTo(new BrandProductResponse(brand.getName(), 3000));
     }
 }

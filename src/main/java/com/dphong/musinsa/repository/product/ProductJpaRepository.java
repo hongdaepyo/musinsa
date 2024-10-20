@@ -1,6 +1,7 @@
 package com.dphong.musinsa.repository.product;
 
 import com.dphong.musinsa.domain.Product;
+import com.dphong.musinsa.domain.ProductCategory;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -24,4 +25,7 @@ public interface ProductJpaRepository extends JpaRepository<Product, Long> {
             group by p.category
             """)
     List<Product> findAllLowestPriceProductsByBrandId(Long brandId);
+
+    Product findTopByCategoryOrderByPrice(ProductCategory category);
+    Product findTopByCategoryOrderByPriceDesc(ProductCategory category);
 }

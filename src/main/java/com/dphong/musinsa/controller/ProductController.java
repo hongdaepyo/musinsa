@@ -1,13 +1,11 @@
 package com.dphong.musinsa.controller;
 
+import com.dphong.musinsa.domain.ProductCategory;
 import com.dphong.musinsa.model.response.SuccessResponse;
 import com.dphong.musinsa.service.ProductQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/v1/products")
 @RestController
@@ -15,12 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProductController {
 
     private final ProductQueryService productQueryService;
-
-    @GetMapping
-    public ResponseEntity<?> products() {
-        return ResponseEntity.ok("Hello World");
-    }
-
+    
     /**
      * 카테고리 별 최저가격 브랜드와 상품 가격, 총액을 조회하는 API
      */
@@ -35,5 +28,12 @@ public class ProductController {
     @GetMapping("/lowest/brand/{brandId}")
     public ResponseEntity<?> getProductsWithLowestPriceByCategories(@PathVariable("brandId") Long brandId) {
         return SuccessResponse.of(productQueryService.getLowestPriceProductsByBrand(brandId)).toResponseEntity();
+    }
+
+    @GetMapping("/search-by-category")
+    public ResponseEntity<?> getProductsByCategoryName(@RequestParam("name") String categoryName) {
+        return SuccessResponse.of(
+                productQueryService.getProductsByCategory(ProductCategory.findByDescription(categoryName))
+        ).toResponseEntity();
     }
 }

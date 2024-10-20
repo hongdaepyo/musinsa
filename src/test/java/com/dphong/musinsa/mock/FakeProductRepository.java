@@ -1,6 +1,7 @@
 package com.dphong.musinsa.mock;
 
 import com.dphong.musinsa.domain.Product;
+import com.dphong.musinsa.domain.ProductCategory;
 import com.dphong.musinsa.repository.product.ProductRepository;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
@@ -33,6 +34,22 @@ public class FakeProductRepository implements ProductRepository {
                 .map(Optional::get)
                 .sorted(Comparator.comparingInt(product -> product.getCategory().getOrder()))
                 .toList();
+    }
+
+    @Override
+    public Product findLowestPriceProductByCategory(ProductCategory category) {
+        return data.stream()
+                .filter(product -> product.getCategory() == category)
+                .min(Comparator.comparingInt(Product::getPrice))
+                .orElseThrow();
+    }
+
+    @Override
+    public Product findHighestPriceProductByCategory(ProductCategory category) {
+        return data.stream()
+                .filter(product -> product.getCategory() == category)
+                .max(Comparator.comparingInt(Product::getPrice))
+                .orElseThrow();
     }
 
     @Override
