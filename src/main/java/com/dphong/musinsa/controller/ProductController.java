@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
 
     private final ProductQueryService productQueryService;
-    
+
     /**
      * 카테고리 별 최저가격 브랜드와 상품 가격, 총액을 조회하는 API
      */
@@ -30,6 +30,9 @@ public class ProductController {
         return SuccessResponse.of(productQueryService.getLowestPriceProductsByBrand(brandId)).toResponseEntity();
     }
 
+    /**
+     * 카테고리 이름으로 최저가와 최고가 상품을 검색하는 API
+     */
     @GetMapping("/search-by-category")
     public ResponseEntity<?> getProductsByCategoryName(@RequestParam("name") String categoryName) {
         return SuccessResponse.of(
