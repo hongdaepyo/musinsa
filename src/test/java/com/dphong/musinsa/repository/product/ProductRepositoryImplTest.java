@@ -2,7 +2,7 @@ package com.dphong.musinsa.repository.product;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
-import com.dphong.musinsa.common.config.JpaConfig;
+import com.dphong.musinsa.RepositoryTest;
 import com.dphong.musinsa.domain.Brand;
 import com.dphong.musinsa.domain.Product;
 import com.dphong.musinsa.domain.ProductCategory;
@@ -13,14 +13,8 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.transaction.annotation.Transactional;
 
-@Import(JpaConfig.class)
-@DataJpaTest
-@Transactional
-class ProductRepositoryImplTest {
+class ProductRepositoryImplTest extends RepositoryTest {
 
     @Autowired
     private ProductJpaRepository productJpaRepository;
