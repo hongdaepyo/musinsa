@@ -32,11 +32,13 @@ public class Brand {
         this.name = name;
     }
 
-    public void addProduct(Product product) {
+    public Brand addProduct(Product product) {
         products.add(product);
+        return this;
     }
 
-    public void addProducts(List<Product> products) {
+    public Brand addProducts(List<Product> products) {
         this.products.addAll(products);
+        return this;
     }
 }

@@ -17,15 +17,6 @@ public interface ProductJpaRepository extends JpaRepository<Product, Long> {
             """)
     List<Product> findAllLowestPriceProductsByCategory();
 
-    @Query("""
-            select p
-            from Product p
-            left join Product p2 on p.category = p2.category and p.brand = p2.brand and p.price > p2.price
-            where p2.id is null and p.brand.id = :brandId
-            group by p.category
-            """)
-    List<Product> findAllLowestPriceProductsByBrandId(Long brandId);
-
     Product findTopByCategoryOrderByPrice(ProductCategory category);
     Product findTopByCategoryOrderByPriceDesc(ProductCategory category);
 }
