@@ -16,16 +16,25 @@ public class ProductController {
 
     private final ProductService productService;
 
+    /**
+     *  상품을 추가하는 API
+     */
     @PostMapping
     ResponseEntity<?> create(@Valid @RequestBody ProductCreateRequest request) {
         return SuccessResponse.of(productService.create(request)).toResponseEntity();
     }
 
+    /**
+     * 상품을 업데이트하는 API
+     */
     @PutMapping("/{id}")
     ResponseEntity<?> update(@PathVariable Long id, @RequestBody ProductUpdateRequest request) {
         return SuccessResponse.of(productService.update(id, request)).toResponseEntity();
     }
 
+    /**
+     *  상품을 삭제하는 API
+     */
     @DeleteMapping("/{id}")
     ResponseEntity<?> delete(@PathVariable Long id) {
         return SuccessResponse.of(productService.delete(id)).toResponseEntity();
