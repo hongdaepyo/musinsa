@@ -28,7 +28,7 @@ public class ProductSearchController {
     /**
      * 모든 카테고리 상품을 구매할 때 최저가인 브랜드의 상품을 조회하는 API
      */
-    @GetMapping("/lowest/brands")
+    @GetMapping("/lowest/brand")
     public ResponseEntity<?> getBrandProductsWithLowestPrice() {
         return SuccessResponse.of(productQueryService.getBrandProductsWithLowestPrice()).toResponseEntity();
     }

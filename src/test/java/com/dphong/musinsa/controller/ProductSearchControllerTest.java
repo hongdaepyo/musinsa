@@ -53,7 +53,7 @@ class ProductSearchControllerTest {
 
         // when
         // then
-        mockMvc.perform(get("/v1/products/lowest/brands"))
+        mockMvc.perform(get("/v1/products/lowest/brand"))
                 .andExpectAll(
                         status().isOk(),
                         jsonPath("$.data.products[0].categoryName").value("categoryName"),
