@@ -5,6 +5,11 @@
 ./gradlew clean build
 ```
 
+### 실행 방법
+```shell
+./gradlew bootRun
+```
+
 ### 구현1. 카테고리 별 최저가격 브랜드와 상품가격, 총액을 조회하는 API
 - GET /v1/products/lowest
 - Response Body
