@@ -22,7 +22,7 @@ public class ProductQueryService {
     public ProductsByCategoryResponse getLowestPriceProducts() {
         List<ProductResponse> products = productRepository.findAllLowestPriceProductsByCategory().stream()
                 .map(product -> new ProductResponse(
-                        product.getCategory(),
+                        product.getCategory().getDescription(),
                         product.getName(),
                         product.getBrand().getName(),
                         product.getPrice())

@@ -1,11 +1,11 @@
 package com.dphong.musinsa.controller;
 
+import static com.dphong.musinsa.domain.ProductCategory.TOP;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.dphong.musinsa.domain.ProductCategory;
 import com.dphong.musinsa.model.response.product.*;
 import com.dphong.musinsa.service.ProductQueryService;
 import java.util.List;
@@ -27,11 +27,9 @@ class ProductSearchControllerTest {
     @Test
     void 카테고리별_최저가_상품을_조회한다() throws Exception {
         // given
+        ProductResponse response = new ProductResponse(TOP.getDescription(), "product1", "brand", 1000);
         given(productQueryService.getLowestPriceProducts()).willReturn(
-                new ProductsByCategoryResponse(
-                        List.of(new ProductResponse(ProductCategory.TOP, "product1", "brand", 1000)),
-                        1000
-                )
+                new ProductsByCategoryResponse(List.of(response), 1000)
         );
 
         // when
@@ -66,7 +64,7 @@ class ProductSearchControllerTest {
     @Test
     void 카테고리_이름으로_상품을_조회한다() throws Exception {
         // given
-        given(productQueryService.getProductsByCategory(ProductCategory.TOP)).willReturn(
+        given(productQueryService.getProductsByCategory(TOP)).willReturn(
                 new ProductByCategoryNameResponse(
                         "상의",
                         List.of(new BrandProductResponse("brandName1", 1000)),

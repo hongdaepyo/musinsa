@@ -1,10 +1,13 @@
 package com.dphong.musinsa.service;
 
+import static com.dphong.musinsa.domain.ProductCategory.BAG;
+import static com.dphong.musinsa.domain.ProductCategory.HAT;
+import static com.dphong.musinsa.domain.ProductCategory.OUTERWEAR;
+import static com.dphong.musinsa.domain.ProductCategory.TOP;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 import com.dphong.musinsa.domain.Brand;
 import com.dphong.musinsa.domain.Product;
-import com.dphong.musinsa.domain.ProductCategory;
 import com.dphong.musinsa.mock.FakeBrandRepository;
 import com.dphong.musinsa.mock.FakeProductRepository;
 import com.dphong.musinsa.model.response.product.*;
@@ -33,12 +36,12 @@ class ProductQueryServiceTest {
         // given
         Brand brand = Brand.builder().name("brand").build();
         List.of(
-                Product.builder().price(1000).name("product1").category(ProductCategory.TOP).brand(brand).build(),
-                Product.builder().price(2000).name("product2").category(ProductCategory.TOP).brand(brand).build(),
-                Product.builder().price(3000).name("product3").category(ProductCategory.OUTERWEAR).brand(brand).build(),
-                Product.builder().price(4000).name("product4").category(ProductCategory.OUTERWEAR).brand(brand).build(),
-                Product.builder().price(6000).name("product5").category(ProductCategory.BAG).brand(brand).build(),
-                Product.builder().price(5000).name("product6").category(ProductCategory.BAG).brand(brand).build()
+                Product.builder().price(1000).name("product1").category(TOP).brand(brand).build(),
+                Product.builder().price(2000).name("product2").category(TOP).brand(brand).build(),
+                Product.builder().price(3000).name("product3").category(OUTERWEAR).brand(brand).build(),
+                Product.builder().price(4000).name("product4").category(OUTERWEAR).brand(brand).build(),
+                Product.builder().price(6000).name("product5").category(BAG).brand(brand).build(),
+                Product.builder().price(5000).name("product6").category(BAG).brand(brand).build()
         ).forEach(productRepository::save);
 
         // when
@@ -48,9 +51,9 @@ class ProductQueryServiceTest {
         assertThat(response.products())
                 .hasSize(3)
                 .containsExactly(
-                        new ProductResponse(ProductCategory.TOP, "product1", "brand", 1000),
-                        new ProductResponse(ProductCategory.OUTERWEAR, "product3", "brand", 3000),
-                        new ProductResponse(ProductCategory.BAG, "product6", "brand", 5000)
+                        new ProductResponse(TOP.getDescription(), "product1", "brand", 1000),
+                        new ProductResponse(OUTERWEAR.getDescription(), "product3", "brand", 3000),
+                        new ProductResponse(BAG.getDescription(), "product6", "brand", 5000)
                 );
         assertThat(response.totalAmount()).isEqualTo(9000);
     }
@@ -61,12 +64,12 @@ class ProductQueryServiceTest {
         Brand brand = brandRepository.save(Brand.builder().id(1L).name("brand").build());
         Brand brand2 = brandRepository.save(Brand.builder().id(2L).name("brand2").build());
         List.of(
-                Product.builder().price(1000).name("product1").category(ProductCategory.TOP).brand(brand).build(),
-                Product.builder().price(4000).name("product4").category(ProductCategory.OUTERWEAR).brand(brand).build(),
-                Product.builder().price(5000).name("product6").category(ProductCategory.BAG).brand(brand).build(),
-                Product.builder().price(1).name("product7").category(ProductCategory.TOP).brand(brand2).build(),
-                Product.builder().price(3).name("product7").category(ProductCategory.OUTERWEAR).brand(brand2).build(),
-                Product.builder().price(6).name("product7").category(ProductCategory.BAG).brand(brand2).build()
+                Product.builder().price(1000).name("product1").category(TOP).brand(brand).build(),
+                Product.builder().price(4000).name("product4").category(OUTERWEAR).brand(brand).build(),
+                Product.builder().price(5000).name("product6").category(BAG).brand(brand).build(),
+                Product.builder().price(1).name("product7").category(TOP).brand(brand2).build(),
+                Product.builder().price(3).name("product7").category(OUTERWEAR).brand(brand2).build(),
+                Product.builder().price(6).name("product7").category(BAG).brand(brand2).build()
         ).forEach(productRepository::save);
 
         // when
@@ -76,9 +79,9 @@ class ProductQueryServiceTest {
         assertThat(response.products())
                 .hasSize(3)
                 .containsExactly(
-                        new CategoryProductResponse(ProductCategory.TOP.getDescription(), "product1", 1000),
-                        new CategoryProductResponse(ProductCategory.OUTERWEAR.getDescription(), "product4", 4000),
-                        new CategoryProductResponse(ProductCategory.BAG.getDescription(), "product6", 5000)
+                        new CategoryProductResponse(TOP.getDescription(), "product1", 1000),
+                        new CategoryProductResponse(OUTERWEAR.getDescription(), "product4", 4000),
+                        new CategoryProductResponse(BAG.getDescription(), "product6", 5000)
                 );
         assertThat(response.totalAmount()).isEqualTo(10000);
     }
@@ -88,15 +91,15 @@ class ProductQueryServiceTest {
         // given
         Brand brand = brandRepository.save(Brand.builder().id(1L).name("brand").build());
         List.of(
-                Product.builder().price(1000).name("product1").category(ProductCategory.TOP).brand(brand).build(),
-                Product.builder().price(2000).name("product2").category(ProductCategory.TOP).brand(brand).build(),
-                Product.builder().price(3000).name("product3").category(ProductCategory.TOP).brand(brand).build(),
-                Product.builder().price(3000).name("product4").category(ProductCategory.HAT).brand(brand).build(),
-                Product.builder().price(4000).name("product5").category(ProductCategory.HAT).brand(brand).build()
+                Product.builder().price(1000).name("product1").category(TOP).brand(brand).build(),
+                Product.builder().price(2000).name("product2").category(TOP).brand(brand).build(),
+                Product.builder().price(3000).name("product3").category(TOP).brand(brand).build(),
+                Product.builder().price(3000).name("product4").category(HAT).brand(brand).build(),
+                Product.builder().price(4000).name("product5").category(HAT).brand(brand).build()
         ).forEach(productRepository::save);
 
         // when
-        ProductByCategoryNameResponse response = service.getProductsByCategory(ProductCategory.TOP);
+        ProductByCategoryNameResponse response = service.getProductsByCategory(TOP);
 
         // then
         assertThat(response.categoryName()).isEqualTo("상의");
