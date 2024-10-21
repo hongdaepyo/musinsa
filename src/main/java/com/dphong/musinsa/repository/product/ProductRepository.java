@@ -8,7 +8,6 @@ public interface ProductRepository {
 
     Product findByIdOrNull(Long id);
     List<Product> findAllLowestPriceProductsByCategory();
-    List<Product> findAllLowestPriceProductsByBrandId(Long brandId);
     Product findLowestPriceProductByCategory(ProductCategory category);
     Product findHighestPriceProductByCategory(ProductCategory category);
     void delete(Product product);

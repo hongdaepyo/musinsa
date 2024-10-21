@@ -5,7 +5,10 @@ import com.dphong.musinsa.model.response.SuccessResponse;
 import com.dphong.musinsa.service.ProductQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RequestMapping("/v1/products")
 @RestController
@@ -23,11 +26,11 @@ public class ProductSearchController {
     }
 
     /**
-     * 브랜드의 모든 카테고리 최저가 상품을 조회하는 API
+     * 모든 카테고리 상품을 구매할 때 최저가인 브랜드의 상품을 조회하는 API
      */
-    @GetMapping("/lowest/brand/{brandId}")
-    public ResponseEntity<?> getProductsWithLowestPriceByCategories(@PathVariable("brandId") Long brandId) {
-        return SuccessResponse.of(productQueryService.getLowestPriceProductsByBrand(brandId)).toResponseEntity();
+    @GetMapping("/lowest/brands")
+    public ResponseEntity<?> getBrandProductsWithLowestPrice() {
+        return SuccessResponse.of(productQueryService.getBrandProductsWithLowestPrice()).toResponseEntity();
     }
 
     /**

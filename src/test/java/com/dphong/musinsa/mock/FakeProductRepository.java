@@ -30,18 +30,6 @@ public class FakeProductRepository implements ProductRepository {
     }
 
     @Override
-    public List<Product> findAllLowestPriceProductsByBrandId(Long brandId) {
-        return data.stream()
-                .filter(product -> product.getBrand().getId().equals(brandId))
-                .collect(Collectors.groupingBy(Product::getCategory, Collectors.minBy(Comparator.comparingInt(Product::getPrice))))
-                .values().stream()
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .sorted(Comparator.comparingInt(product -> product.getCategory().getOrder()))
-                .toList();
-    }
-
-    @Override
     public Product findLowestPriceProductByCategory(ProductCategory category) {
         return data.stream()
                 .filter(product -> product.getCategory() == category)

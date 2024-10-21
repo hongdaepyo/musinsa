@@ -24,4 +24,9 @@ public class BrandRepositoryImpl implements BrandRepository {
     public void delete(Brand brand) {
         brandJpaRepository.delete(brand);
     }
+
+    @Override
+    public Brand findBrandWithSumOfLowestPrices() {
+        return brandJpaRepository.findTopBySumOfLowestPrices();
+    }
 }

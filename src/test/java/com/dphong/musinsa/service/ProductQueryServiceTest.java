@@ -59,31 +59,37 @@ class ProductQueryServiceTest {
     }
 
     @Test
-    void 브랜드의_카테고리별_최저가_상품을_조회한다() {
+    void 상품_총합이_최저가인_브랜드의_상품을_조회한다() {
         // given
         Brand brand = brandRepository.save(Brand.builder().id(1L).name("brand").build());
         Brand brand2 = brandRepository.save(Brand.builder().id(2L).name("brand2").build());
-        List.of(
-                Product.builder().price(1000).name("product1").category(TOP).brand(brand).build(),
-                Product.builder().price(4000).name("product4").category(OUTERWEAR).brand(brand).build(),
-                Product.builder().price(5000).name("product6").category(BAG).brand(brand).build(),
-                Product.builder().price(1).name("product7").category(TOP).brand(brand2).build(),
-                Product.builder().price(3).name("product7").category(OUTERWEAR).brand(brand2).build(),
-                Product.builder().price(6).name("product7").category(BAG).brand(brand2).build()
-        ).forEach(productRepository::save);
+        brand.addProducts(
+                List.of(
+                        Product.builder().price(1000).name("product1").category(TOP).brand(brand).build(),
+                        Product.builder().price(4000).name("product2").category(OUTERWEAR).brand(brand).build(),
+                        Product.builder().price(5000).name("product3").category(BAG).brand(brand).build()
+                )
+        );
+        brand2.addProducts(
+                List.of(
+                        Product.builder().price(1).name("product4").category(TOP).brand(brand2).build(),
+                        Product.builder().price(3).name("product5").category(OUTERWEAR).brand(brand2).build(),
+                        Product.builder().price(6).name("product6").category(BAG).brand(brand2).build()
+                )
+        );
 
         // when
-        BrandLowestPriceProductResponse response = service.getLowestPriceProductsByBrand(brand.getId());
+        BrandLowestPriceProductResponse response = service.getBrandProductsWithLowestPrice();
 
         // then
         assertThat(response.products())
                 .hasSize(3)
                 .containsExactly(
-                        new CategoryProductResponse(TOP.getDescription(), "product1", 1000),
-                        new CategoryProductResponse(OUTERWEAR.getDescription(), "product4", 4000),
-                        new CategoryProductResponse(BAG.getDescription(), "product6", 5000)
+                        new CategoryProductResponse(TOP.getDescription(), "product4", 1),
+                        new CategoryProductResponse(OUTERWEAR.getDescription(), "product5", 3),
+                        new CategoryProductResponse(BAG.getDescription(), "product6", 6)
                 );
-        assertThat(response.totalAmount()).isEqualTo(10000);
+        assertThat(response.totalAmount()).isEqualTo(10);
     }
 
     @Test

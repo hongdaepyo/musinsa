@@ -1,8 +1,10 @@
 package com.dphong.musinsa.mock;
 
 import com.dphong.musinsa.domain.Brand;
+import com.dphong.musinsa.model.dto.Products;
 import com.dphong.musinsa.repository.brand.BrandRepository;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
@@ -36,5 +38,12 @@ public class FakeBrandRepository implements BrandRepository {
     @Override
     public void delete(Brand brand) {
         data.removeIf(it -> Objects.equals(it.getId(), brand.getId()));
+    }
+
+    @Override
+    public Brand findBrandWithSumOfLowestPrices() {
+        return data.stream()
+                .min(Comparator.comparingInt(brand -> new Products(brand.getProducts()).getSumOfPrices()))
+                .orElseThrow();
     }
 }

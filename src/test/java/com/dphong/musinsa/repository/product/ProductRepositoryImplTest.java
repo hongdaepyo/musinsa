@@ -69,34 +69,7 @@ class ProductRepositoryImplTest extends RepositoryTest {
         assertThat(products.get(1).getName()).isEqualTo("product3");
         assertThat(products.getLast().getName()).isEqualTo("product6");
     }
-
-    @Test
-    void 브랜드의_카테고리별_최저가_상품을_조회한다() {
-        // given
-        Brand brand = brandRepository.save(Brand.builder().name("brand").build());
-        Brand brand2 = brandRepository.save(Brand.builder().name("brand2").build());
-        List.of(
-                Product.builder().price(1000).name("product1").category(ProductCategory.TOP).brand(brand).build(),
-                Product.builder().price(2000).name("product2").category(ProductCategory.TOP).brand(brand).build(),
-                Product.builder().price(3000).name("product3").category(ProductCategory.OUTERWEAR).brand(brand).build(),
-                Product.builder().price(4000).name("product4").category(ProductCategory.OUTERWEAR).brand(brand).build(),
-                Product.builder().price(6000).name("product5").category(ProductCategory.BAG).brand(brand).build(),
-                Product.builder().price(5000).name("product6").category(ProductCategory.BAG).brand(brand).build(),
-                Product.builder().price(1).name("product7").category(ProductCategory.TOP).brand(brand2).build(),
-                Product.builder().price(3).name("product7").category(ProductCategory.OUTERWEAR).brand(brand2).build(),
-                Product.builder().price(6).name("product7").category(ProductCategory.BAG).brand(brand2).build()
-        ).forEach(productRepository::save);
-
-        // when
-        List<Product> products = productRepository.findAllLowestPriceProductsByBrandId(brand.getId());
-
-        // then
-        assertThat(products).hasSize(3);
-        assertThat(products.getFirst().getName()).isEqualTo("product1");
-        assertThat(products.get(1).getName()).isEqualTo("product3");
-        assertThat(products.getLast().getName()).isEqualTo("product6");
-    }
-
+    
     @Test
     void 카테고리의_최저가_상품을_조회한다() {
         // given

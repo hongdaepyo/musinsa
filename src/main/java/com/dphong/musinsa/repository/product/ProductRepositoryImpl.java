@@ -26,13 +26,6 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public List<Product> findAllLowestPriceProductsByBrandId(Long brandId) {
-        return productJpaRepository.findAllLowestPriceProductsByBrandId(brandId).stream()
-                .sorted(Comparator.comparingInt(product -> product.getCategory().getOrder()))
-                .toList();
-    }
-
-    @Override
     public Product findLowestPriceProductByCategory(ProductCategory category) {
         return productJpaRepository.findTopByCategoryOrderByPrice(category);
     }
