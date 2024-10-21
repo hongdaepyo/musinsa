@@ -6,4 +6,5 @@ public interface BrandRepository {
 
     Brand findByIdOrNull(Long id);
     Brand save(Brand brand);
+    void delete(Brand brand);
 }

@@ -32,4 +32,9 @@ public class FakeBrandRepository implements BrandRepository {
             return brand;
         }
     }
+
+    @Override
+    public void delete(Brand brand) {
+        data.removeIf(it -> Objects.equals(it.getId(), brand.getId()));
+    }
 }

@@ -26,4 +26,12 @@ class BrandRepositoryImplTest extends RepositoryTest {
         Brand brand = brandRepository.save(newBrand);
         assertThat(brand.getName()).isEqualTo("테스트 브랜드");
     }
+
+    @Test
+    void 브랜드를_삭제한다() {
+        Brand newBrand = Brand.builder().name("테스트 브랜드").build();
+        Brand brand = brandRepository.save(newBrand);
+        brandRepository.delete(brand);
+        assertThat(brandRepository.findByIdOrNull(brand.getId())).isNull();
+    }
 }

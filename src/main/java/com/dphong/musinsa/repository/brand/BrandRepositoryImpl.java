@@ -19,4 +19,9 @@ public class BrandRepositoryImpl implements BrandRepository {
     public Brand save(Brand brand) {
         return brandJpaRepository.save(brand);
     }
+
+    @Override
+    public void delete(Brand brand) {
+        brandJpaRepository.delete(brand);
+    }
 }

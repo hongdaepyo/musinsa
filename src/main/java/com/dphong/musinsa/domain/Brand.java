@@ -25,4 +25,8 @@ public class Brand {
         this.id = id;
         this.name = name;
     }
+
+    public void update(String name) {
+        this.name = name;
+    }
 }
