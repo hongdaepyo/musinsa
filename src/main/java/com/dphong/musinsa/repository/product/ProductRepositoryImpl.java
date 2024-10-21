@@ -14,6 +14,11 @@ public class ProductRepositoryImpl implements ProductRepository {
     private final ProductJpaRepository productJpaRepository;
 
     @Override
+    public Product findByIdOrNull(Long id) {
+        return productJpaRepository.findById(id).orElse(null);
+    }
+
+    @Override
     public List<Product> findAllLowestPriceProductsByCategory() {
         return productJpaRepository.findAllLowestPriceProductsByCategory().stream()
                 .sorted(Comparator.comparingInt(product -> product.getCategory().getOrder()))
@@ -35,6 +40,11 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public Product findHighestPriceProductByCategory(ProductCategory category) {
         return productJpaRepository.findTopByCategoryOrderByPriceDesc(category);
+    }
+
+    @Override
+    public void delete(Product product) {
+        productJpaRepository.delete(product);
     }
 
     @Override

@@ -1,13 +1,20 @@
 package com.dphong.musinsa.controller;
 
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.dphong.musinsa.domain.ProductCategory;
+import com.dphong.musinsa.model.dto.CommonStatus;
+import com.dphong.musinsa.model.dto.ProductUpdateStatus;
 import com.dphong.musinsa.model.request.product.ProductCreateRequest;
+import com.dphong.musinsa.model.request.product.ProductUpdateRequest;
 import com.dphong.musinsa.model.response.product.ProductCreateResponse;
+import com.dphong.musinsa.model.response.product.ProductDeleteResponse;
+import com.dphong.musinsa.model.response.product.ProductUpdateResponse;
 import com.dphong.musinsa.service.ProductService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -76,6 +83,39 @@ class ProductControllerTest {
                         .content(objectMapper.writeValueAsString(request))
         ).andExpectAll(
                 status().is4xxClientError()
+        );
+    }
+
+    @Test
+    void 상품을_업데이트한다() throws Exception {
+        // given
+        ProductUpdateRequest request = new ProductUpdateRequest("product1", ProductCategory.TOP, 1000);
+        given(productService.update(1L, request)).willReturn(new ProductUpdateResponse(1L, ProductUpdateStatus.SUCCESS));
+
+        // when
+        // then
+        mockMvc.perform(
+                put("/v1/products/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request))
+        ).andExpectAll(
+                status().isOk(),
+                jsonPath("$.data.status").value("SUCCESS")
+        );
+    }
+
+    @Test
+    void 상품을_삭제한다() throws Exception {
+        // given
+        given(productService.delete(1L)).willReturn(new ProductDeleteResponse(1L, CommonStatus.SUCCESS));
+
+        // when
+        // then
+        mockMvc.perform(
+                delete("/v1/products/1")
+        ).andExpectAll(
+                status().isOk(),
+                jsonPath("$.data.status").value("SUCCESS")
         );
     }
 }

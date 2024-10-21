@@ -10,6 +10,7 @@ import com.dphong.musinsa.repository.brand.BrandJpaRepository;
 import com.dphong.musinsa.repository.brand.BrandRepository;
 import com.dphong.musinsa.repository.brand.BrandRepositoryImpl;
 import java.util.List;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,20 @@ class ProductRepositoryImplTest extends RepositoryTest {
     void setUp() {
         productRepository = new ProductRepositoryImpl(productJpaRepository);
         brandRepository = new BrandRepositoryImpl(brandJpaRepository);
+    }
+
+    @Test
+    void 상품_아이디로_상품을_조회한다() {
+        // given
+        Product product = productRepository.save(
+                Product.builder().price(1000).name("product1").category(ProductCategory.TOP).build()
+        );
+        // when
+
+        Product foundProduct = productRepository.findByIdOrNull(product.getId());
+
+        // then
+        assertThat(foundProduct).isEqualTo(product);
     }
 
     @Test
@@ -118,5 +133,19 @@ class ProductRepositoryImplTest extends RepositoryTest {
         assertThat(product.getName()).isEqualTo("product4");
         assertThat(product.getCategory()).isEqualTo(ProductCategory.HAT);
         assertThat(product.getPrice()).isEqualTo(4000);
+    }
+
+    @Test
+    void 상품을_삭제한다() {
+        // given
+        Product product = productRepository.save(
+                Product.builder().price(1000).name("product1").category(ProductCategory.TOP).build()
+        );
+
+        // when
+        productRepository.delete(product);
+
+        // then
+        Assertions.assertThat(productRepository.findByIdOrNull(product.getId())).isNull();
     }
 }

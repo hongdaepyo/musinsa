@@ -14,6 +14,11 @@ public class FakeProductRepository implements ProductRepository {
 
 
     @Override
+    public Product findByIdOrNull(Long id) {
+        return data.stream().filter(product -> product.getId().equals(id)).findFirst().orElse(null);
+    }
+
+    @Override
     public List<Product> findAllLowestPriceProductsByCategory() {
         return data.stream()
                 .collect(Collectors.groupingBy(Product::getCategory, Collectors.minBy(Comparator.comparingInt(Product::getPrice))))
@@ -50,6 +55,11 @@ public class FakeProductRepository implements ProductRepository {
                 .filter(product -> product.getCategory() == category)
                 .max(Comparator.comparingInt(Product::getPrice))
                 .orElseThrow();
+    }
+
+    @Override
+    public void delete(Product product) {
+        data.removeIf(it -> Objects.equals(it.getId(), product.getId()));
     }
 
     @Override

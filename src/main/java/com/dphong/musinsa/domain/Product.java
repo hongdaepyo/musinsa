@@ -30,4 +30,10 @@ public class Product {
         this.price = price;
         this.brand = brand;
     }
+
+    public void update(String name, ProductCategory category, int price) {
+        this.name = name;
+        this.category = category;
+        this.price = price;
+    }
 }
