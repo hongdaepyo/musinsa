@@ -45,19 +45,22 @@ class ProductSearchControllerTest {
     @Test
     void 상품_총합이_최저가인_브랜드를_조회한다() throws Exception {
         // given
-        given(productQueryService.getBrandProductsWithLowestPrice()).willReturn(
-                new BrandLowestPriceProductResponse("brandName", List.of(
-                        new CategoryProductResponse("categoryName", "productName", 1000)
-                ), 1000)
+        var response = new BrandProductWithLowestSumOfPricesResponse(
+                new BrandLowestPriceProductResponse(
+                        "brandName",
+                        List.of(new CategoryProductResponse("categoryName", "productName", 1000)),
+                        1000
+                )
         );
+        given(productQueryService.getBrandProductsWithLowestPrice()).willReturn(response);
 
         // when
         // then
         mockMvc.perform(get("/v1/products/lowest/brand"))
                 .andExpectAll(
                         status().isOk(),
-                        jsonPath("$.data.products[0].categoryName").value("categoryName"),
-                        jsonPath("$.data.totalAmount").value(1000)
+                        jsonPath("$.data.lowestPrice.categories[0].categoryName").value("categoryName"),
+                        jsonPath("$.data.lowestPrice.totalAmount").value(1000)
                 );
     }
 

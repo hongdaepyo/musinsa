@@ -79,17 +79,17 @@ class ProductQueryServiceTest {
         );
 
         // when
-        BrandLowestPriceProductResponse response = service.getBrandProductsWithLowestPrice();
+        BrandProductWithLowestSumOfPricesResponse response = service.getBrandProductsWithLowestPrice();
 
         // then
-        assertThat(response.products())
+        assertThat(response.lowestPrice().categories())
                 .hasSize(3)
                 .containsExactly(
                         new CategoryProductResponse(TOP.getDescription(), "product4", 1),
                         new CategoryProductResponse(OUTERWEAR.getDescription(), "product5", 3),
                         new CategoryProductResponse(BAG.getDescription(), "product6", 6)
                 );
-        assertThat(response.totalAmount()).isEqualTo(10);
+        assertThat(response.lowestPrice().totalAmount()).isEqualTo(10);
     }
 
     @Test

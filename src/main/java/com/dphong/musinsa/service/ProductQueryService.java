@@ -33,12 +33,14 @@ public class ProductQueryService {
         return new ProductsByCategoryResponse(products, totalPrice);
     }
 
-    public BrandLowestPriceProductResponse getBrandProductsWithLowestPrice() {
+    public BrandProductWithLowestSumOfPricesResponse getBrandProductsWithLowestPrice() {
         Brand brand = brandRepository.findBrandWithSumOfLowestPrices();
         List<Product> products = brand.getProducts();
         List<CategoryProductResponse> categoryProducts = products.stream().map(CategoryProductResponse::from).toList();
         int totalPrice = new Products(products).getSumOfPrices();
-        return new BrandLowestPriceProductResponse(brand.getName(), categoryProducts, totalPrice);
+        return new BrandProductWithLowestSumOfPricesResponse(
+                new BrandLowestPriceProductResponse(brand.getName(), categoryProducts, totalPrice)
+        );
     }
 
     public ProductByCategoryNameResponse getProductsByCategory(ProductCategory category) {

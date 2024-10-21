@@ -4,7 +4,7 @@ import java.util.List;
 
 public record BrandLowestPriceProductResponse(
         String brandName,
-        List<CategoryProductResponse> products,
+        List<CategoryProductResponse> categories,
         int totalAmount
 ) {
 
