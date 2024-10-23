@@ -3,6 +3,7 @@ package com.dphong.musinsa.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.dphong.musinsa.common.exception.ResourceNotFoundException;
 import com.dphong.musinsa.domain.Brand;
 import com.dphong.musinsa.domain.Product;
 import com.dphong.musinsa.domain.ProductCategory;
@@ -55,7 +56,7 @@ class ProductServiceTest {
         // when
         // then
         assertThatThrownBy(() -> service.create(request))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(ResourceNotFoundException.class);
     }
 
     @Test
@@ -90,7 +91,7 @@ class ProductServiceTest {
         // when
         // then
         assertThatThrownBy(() -> service.update(invalidProductId, request))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(ResourceNotFoundException.class);
     }
 
     @Test

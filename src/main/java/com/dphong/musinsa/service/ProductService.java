@@ -1,5 +1,6 @@
 package com.dphong.musinsa.service;
 
+import com.dphong.musinsa.common.exception.ResourceNotFoundException;
 import com.dphong.musinsa.domain.Brand;
 import com.dphong.musinsa.domain.Product;
 import com.dphong.musinsa.model.dto.CommonStatus;
@@ -26,7 +27,7 @@ public class ProductService {
     public ProductCreateResponse create(ProductCreateRequest request) {
         Brand brand = brandRepository.findByIdOrNull(request.brandId());
         if (brand == null) {
-            throw new IllegalArgumentException("No brand found with id: " + request.brandId());
+            throw new ResourceNotFoundException("Brand", request.brandId());
         }
         Product product = productRepository.save(
                 Product.builder()
@@ -43,7 +44,7 @@ public class ProductService {
     public ProductUpdateResponse update(Long id, ProductUpdateRequest request) {
         Product product = productRepository.findByIdOrNull(id);
         if (product == null) {
-            throw new IllegalArgumentException("No product found with id: " + id);
+            throw new ResourceNotFoundException("Product", id);
         }
         product.update(request.name(), request.category(), request.price());
         productRepository.save(product);
@@ -54,7 +55,7 @@ public class ProductService {
     public ProductDeleteResponse delete(Long id) {
         Product product = productRepository.findByIdOrNull(id);
         if (product == null) {
-            throw new IllegalArgumentException("No product found with id: " + id);
+            throw new ResourceNotFoundException("Product", id);
         }
         productRepository.delete(product);
         return new ProductDeleteResponse(id, CommonStatus.SUCCESS);
