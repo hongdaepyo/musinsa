@@ -3,15 +3,13 @@ package com.dphong.musinsa.mock;
 import com.dphong.musinsa.domain.Product;
 import com.dphong.musinsa.domain.ProductCategory;
 import com.dphong.musinsa.repository.product.ProductRepository;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class FakeProductRepository implements ProductRepository {
-
-    AtomicLong autoIncrementId = new AtomicLong(1);
-    List<Product> data = new ArrayList<>();
-
+public class FakeProductRepository extends AbstractFakeRepository<Product> implements ProductRepository {
 
     @Override
     public Product findByIdOrNull(Long id) {
@@ -54,7 +52,7 @@ public class FakeProductRepository implements ProductRepository {
     public Product save(Product product) {
         if (product.getId() == null || product.getId() == 0) {
             Product newProduct = Product.builder()
-                    .id(autoIncrementId.getAndIncrement())
+                    .id(autoIncrementId.incrementAndGet())
                     .price(product.getPrice())
                     .name(product.getName())
                     .brand(product.getBrand())

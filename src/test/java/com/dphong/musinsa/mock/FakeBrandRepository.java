@@ -3,16 +3,10 @@ package com.dphong.musinsa.mock;
 import com.dphong.musinsa.domain.Brand;
 import com.dphong.musinsa.model.dto.Products;
 import com.dphong.musinsa.repository.brand.BrandRepository;
-import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicLong;
 
-public class FakeBrandRepository implements BrandRepository {
-
-    AtomicLong autoIncrementId = new AtomicLong(1);
-    List<Brand> data = new ArrayList<>();
+public class FakeBrandRepository extends AbstractFakeRepository<Brand> implements BrandRepository {
 
     @Override
     public Brand findByIdOrNull(Long id) {
@@ -23,7 +17,7 @@ public class FakeBrandRepository implements BrandRepository {
     public Brand save(Brand brand) {
         if (brand.getId() == null || brand.getId() == 0) {
             Brand newBrand = Brand.builder()
-                    .id(autoIncrementId.getAndIncrement())
+                    .id(autoIncrementId.incrementAndGet())
                     .name(brand.getName())
                     .build();
             data.add(newBrand);
