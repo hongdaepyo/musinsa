@@ -23,16 +23,16 @@
                     "category": "TOP",
                     "name": "테스트 상의",
                     "brandName": "A",
-                    "price": 1000
+                    "price": "1,000"
                 },
                 {
                     "category": "OUTER",
                     "name": "테스트 아우터",
                     "brandName": "B",
-                    "price": 1000
+                    "price": "1,000"
                 }
             ],
-            "totalAmount": 2000
+            "totalAmount": "2,000"
         }
     }
   ```
@@ -48,16 +48,16 @@
             "lowestPrice": {
                 "brandName": "D",
                 "categories": [
-                    {"categoryName": "상의", "name": "상품1", "price": 10100},
-                    {"categoryName": "아우터", "name": "상품2", "price": 5100},
-                    {"categoryName": "바지", "name": "상품3", "price": 3000},
-                    {"categoryName": "스니커즈", "name": "상품4", "price": 9500},
-                    {"categoryName": "가방", "name": "상품5", "price": 2500},
-                    {"categoryName": "모자", "name": "상품6", "price": 1500},
-                    {"categoryName": "양말", "name": "상품7", "price": 2400},
-                    {"categoryName": "악세서리", "name": "상품8", "price": 2000}
+                    {"categoryName": "상의", "name": "상품1", "price": "10,000"},
+                    {"categoryName": "아우터", "name": "상품2", "price": "5,100"},
+                    {"categoryName": "바지", "name": "상품3", "price": "3,000"},
+                    {"categoryName": "스니커즈", "name": "상품4", "price": "9,500"},
+                    {"categoryName": "가방", "name": "상품5", "price": "2,500"},
+                    {"categoryName": "모자", "name": "상품6", "price": "1,500"},
+                    {"categoryName": "양말", "name": "상품7", "price": "2,400"},
+                    {"categoryName": "악세서리", "name": "상품8", "price": "2,000"}
                 ],
-                "totalAmount": 36100
+                "totalAmount": "36,100"
             } 
         }
     }
@@ -78,16 +78,16 @@
               "lowestPrice": [
                   {
                       "brandName": "C",
-                      "price": 1000
+                      "price": "1,000"
                   }
               ],
               "highestPrice": [
                   {
                       "brandName": "I",
-                      "price": 11400
+                      "price": "11,400"
                   }
               ],
-              "totalAmount": 36100
+              "totalAmount": "36,100"
           }
       }
   }
@@ -178,7 +178,7 @@
   {
       "name": "상품명",
       "category": "TOP",
-      "price": 1000
+      "price": "1,000"
   }
   ```
 - Response Body

@@ -37,7 +37,7 @@ public class FakeBrandRepository extends AbstractFakeRepository<Brand> implement
     @Override
     public Brand findBrandWithSumOfLowestPrices() {
         return data.stream()
-                .min(Comparator.comparingInt(brand -> new Products(brand.getProducts()).getSumOfPrices()))
+                .min(Comparator.comparingLong(brand -> new Products(brand.getProducts()).getSumOfPrices()))
                 .orElseThrow();
     }
 }

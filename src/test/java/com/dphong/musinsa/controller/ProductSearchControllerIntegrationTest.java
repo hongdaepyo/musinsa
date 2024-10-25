@@ -11,6 +11,7 @@ import com.dphong.musinsa.IntegrationTest;
 import com.dphong.musinsa.domain.Brand;
 import com.dphong.musinsa.domain.Product;
 import com.dphong.musinsa.fixtures.BrandFixture;
+import com.dphong.musinsa.model.dto.Money;
 import com.dphong.musinsa.repository.brand.BrandJpaRepository;
 import com.dphong.musinsa.repository.product.ProductJpaRepository;
 import java.util.List;
@@ -35,12 +36,12 @@ class ProductSearchControllerIntegrationTest extends IntegrationTest {
 
         productJpaRepository.saveAll(
                 List.of(
-                        Product.builder().brand(brand).category(TOP).price(1000).name("testTop1").build(),
-                        Product.builder().brand(brand).category(OUTERWEAR).price(1500).name("testOuter1").build(),
-                        Product.builder().brand(brand).category(PANTS).price(2000).name("testPants1").build(),
-                        Product.builder().brand(brand2).category(TOP).price(5000).name("testTop2").build(),
-                        Product.builder().brand(brand2).category(OUTERWEAR).price(1000).name("testOuter2").build(),
-                        Product.builder().brand(brand2).category(PANTS).price(3000).name("testPants2").build()
+                        Product.builder().brand(brand).category(TOP).price(Money.of(1000)).name("testTop1").build(),
+                        Product.builder().brand(brand).category(OUTERWEAR).price(Money.of(1500)).name("testOuter1").build(),
+                        Product.builder().brand(brand).category(PANTS).price(Money.of(2000)).name("testPants1").build(),
+                        Product.builder().brand(brand2).category(TOP).price(Money.of(5000)).name("testTop2").build(),
+                        Product.builder().brand(brand2).category(OUTERWEAR).price(Money.of(1000)).name("testOuter2").build(),
+                        Product.builder().brand(brand2).category(PANTS).price(Money.of(3000)).name("testPants2").build()
                 )
         );
 
@@ -52,7 +53,7 @@ class ProductSearchControllerIntegrationTest extends IntegrationTest {
                         jsonPath("$.data.products[0].name").value("testTop1"),
                         jsonPath("$.data.products[1].name").value("testOuter2"),
                         jsonPath("$.data.products[2].name").value("testPants1"),
-                        jsonPath("$.data.totalAmount").value(4000)
+                        jsonPath("$.data.totalAmount").value("4,000")
                 );
     }
 
@@ -63,10 +64,10 @@ class ProductSearchControllerIntegrationTest extends IntegrationTest {
         brandJpaRepository.save(
                 brand1.addProducts(
                         List.of(
-                                Product.builder().brand(brand1).category(TOP).price(1000).name("testTop1").build(),
-                                Product.builder().brand(brand1).category(OUTERWEAR).price(5000).name("testOuter1")
+                                Product.builder().brand(brand1).category(TOP).price(Money.of(1000)).name("testTop1").build(),
+                                Product.builder().brand(brand1).category(OUTERWEAR).price(Money.of(5000)).name("testOuter1")
                                         .build(),
-                                Product.builder().brand(brand1).category(PANTS).price(1000).name("testPants1").build()
+                                Product.builder().brand(brand1).category(PANTS).price(Money.of(1000)).name("testPants1").build()
                         )
                 )
         );
@@ -75,9 +76,9 @@ class ProductSearchControllerIntegrationTest extends IntegrationTest {
         brandJpaRepository.save(
                 brand2.addProducts(
                         List.of(
-                                Product.builder().brand(brand2).category(TOP).price(2000).name("testTop2").build(),
-                                Product.builder().brand(brand2).category(OUTERWEAR).price(3500).name("testOuter2").build(),
-                                Product.builder().brand(brand2).category(PANTS).price(2000).name("testPants2").build()
+                                Product.builder().brand(brand2).category(TOP).price(Money.of(2000)).name("testTop2").build(),
+                                Product.builder().brand(brand2).category(OUTERWEAR).price(Money.of(3500)).name("testOuter2").build(),
+                                Product.builder().brand(brand2).category(PANTS).price(Money.of(2000)).name("testPants2").build()
                         )
                 )
         );
@@ -86,10 +87,10 @@ class ProductSearchControllerIntegrationTest extends IntegrationTest {
         brandJpaRepository.save(
                 brand3.addProducts(
                         List.of(
-                                Product.builder().brand(brand3).category(TOP).price(3000).name("testTop3").build(),
-                                Product.builder().brand(brand3).category(OUTERWEAR).price(2000).name("testOuter3")
+                                Product.builder().brand(brand3).category(TOP).price(Money.of(3000)).name("testTop3").build(),
+                                Product.builder().brand(brand3).category(OUTERWEAR).price(Money.of(2000)).name("testOuter3")
                                         .build(),
-                                Product.builder().brand(brand3).category(PANTS).price(3000).name("testPants3").build()
+                                Product.builder().brand(brand3).category(PANTS).price(Money.of(3000)).name("testPants3").build()
                         )
                 )
         );
@@ -100,7 +101,7 @@ class ProductSearchControllerIntegrationTest extends IntegrationTest {
                 .andExpectAll(
                         status().isOk(),
                         jsonPath("$.data.lowestPrice.categories[0].categoryName").value("상의"),
-                        jsonPath("$.data.lowestPrice.totalAmount").value(7000)
+                        jsonPath("$.data.lowestPrice.totalAmount").value("7,000")
                 );
     }
 
@@ -112,12 +113,12 @@ class ProductSearchControllerIntegrationTest extends IntegrationTest {
 
         productJpaRepository.saveAll(
                 List.of(
-                        Product.builder().brand(brand).category(TOP).price(1000).name("testTop1").build(),
-                        Product.builder().brand(brand2).category(TOP).price(2000).name("testTop2").build(),
-                        Product.builder().brand(brand).category(OUTERWEAR).price(5000).name("testOuter1").build(),
-                        Product.builder().brand(brand2).category(OUTERWEAR).price(3500).name("testOuter2").build(),
-                        Product.builder().brand(brand).category(PANTS).price(1000).name("testPants1").build(),
-                        Product.builder().brand(brand2).category(PANTS).price(2000).name("testPants2").build()
+                        Product.builder().brand(brand).category(TOP).price(Money.of(1000)).name("testTop1").build(),
+                        Product.builder().brand(brand2).category(TOP).price(Money.of(2000)).name("testTop2").build(),
+                        Product.builder().brand(brand).category(OUTERWEAR).price(Money.of(5000)).name("testOuter1").build(),
+                        Product.builder().brand(brand2).category(OUTERWEAR).price(Money.of(3500)).name("testOuter2").build(),
+                        Product.builder().brand(brand).category(PANTS).price(Money.of(1000)).name("testPants1").build(),
+                        Product.builder().brand(brand2).category(PANTS).price(Money.of(2000)).name("testPants2").build()
                 )
         );
 
@@ -131,9 +132,9 @@ class ProductSearchControllerIntegrationTest extends IntegrationTest {
                         status().isOk(),
                         jsonPath("$.data.categoryName").value("상의"),
                         jsonPath("$.data.lowestPrice[0].brandName").value("testBrand"),
-                        jsonPath("$.data.lowestPrice[0].price").value(1000),
+                        jsonPath("$.data.lowestPrice[0].price").value("1,000"),
                         jsonPath("$.data.highestPrice[0].brandName").value("testBrand2"),
-                        jsonPath("$.data.highestPrice[0].price").value(2000)
+                        jsonPath("$.data.highestPrice[0].price").value("2,000")
                 );
     }
 }

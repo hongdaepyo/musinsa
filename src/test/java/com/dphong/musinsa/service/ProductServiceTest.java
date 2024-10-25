@@ -10,6 +10,7 @@ import com.dphong.musinsa.domain.ProductCategory;
 import com.dphong.musinsa.mock.FakeBrandRepository;
 import com.dphong.musinsa.mock.FakeProductRepository;
 import com.dphong.musinsa.model.dto.CommonStatus;
+import com.dphong.musinsa.model.dto.Money;
 import com.dphong.musinsa.model.dto.ProductUpdateStatus;
 import com.dphong.musinsa.model.request.product.ProductCreateRequest;
 import com.dphong.musinsa.model.request.product.ProductUpdateRequest;
@@ -63,7 +64,7 @@ class ProductServiceTest {
     void 상품을_업데이트한다() {
         // given
         Product product = productRepository.save(
-                Product.builder().price(1000).name("product1").category(ProductCategory.TOP).build()
+                Product.builder().price(Money.of(1000)).name("product1").category(ProductCategory.TOP).build()
         );
         ProductUpdateRequest request = new ProductUpdateRequest("otherName", ProductCategory.TOP, 1);
 
@@ -76,14 +77,14 @@ class ProductServiceTest {
         Product foundProduct = productRepository.findByIdOrNull(product.getId());
         assertThat(foundProduct.getName()).isEqualTo("otherName");
         assertThat(foundProduct.getCategory()).isEqualTo(ProductCategory.TOP);
-        assertThat(foundProduct.getPrice()).isEqualTo(1);
+        assertThat(foundProduct.getPrice().amount()).isEqualTo(1);
     }
 
     @Test
     void 상품을_업데이트할_때_상품을_찾을_수_없으면_업데이트할_수_없다() {
         // given
         Product product = productRepository.save(
-                Product.builder().price(1000).name("product1").category(ProductCategory.TOP).build()
+                Product.builder().price(Money.of(1000)).name("product1").category(ProductCategory.TOP).build()
         );
         ProductUpdateRequest request = new ProductUpdateRequest("otherName", ProductCategory.TOP, 1);
         long invalidProductId = -1L;
@@ -98,7 +99,7 @@ class ProductServiceTest {
     void 상품을_삭제한다() {
         // given
         Product product = productRepository.save(
-                Product.builder().price(1000).name("product1").category(ProductCategory.TOP).build()
+                Product.builder().price(Money.of(1000)).name("product1").category(ProductCategory.TOP).build()
         );
         // when
         ProductDeleteResponse response = service.delete(product.getId());

@@ -3,6 +3,7 @@ package com.dphong.musinsa.service;
 import com.dphong.musinsa.domain.Brand;
 import com.dphong.musinsa.domain.Product;
 import com.dphong.musinsa.domain.ProductCategory;
+import com.dphong.musinsa.model.dto.Money;
 import com.dphong.musinsa.model.dto.Products;
 import com.dphong.musinsa.model.response.product.*;
 import com.dphong.musinsa.repository.brand.BrandRepository;
@@ -29,17 +30,17 @@ public class ProductQueryService {
                         product.getPrice())
                 )
                 .toList();
-        int totalPrice = products.stream().mapToInt(ProductResponse::price).sum();
-        return new ProductsByCategoryResponse(products, totalPrice);
+        long totalPrice = products.stream().mapToLong(product -> product.price().amount()).sum();
+        return new ProductsByCategoryResponse(products, new Money(totalPrice));
     }
 
     public BrandProductWithLowestSumOfPricesResponse getBrandProductsWithLowestPrice() {
         Brand brand = brandRepository.findBrandWithSumOfLowestPrices();
         List<Product> products = brand.getProducts();
         List<CategoryProductResponse> categoryProducts = products.stream().map(CategoryProductResponse::from).toList();
-        int totalPrice = new Products(products).getSumOfPrices();
+        long totalPrice = new Products(products).getSumOfPrices();
         return new BrandProductWithLowestSumOfPricesResponse(
-                new BrandLowestPriceProductResponse(brand.getName(), categoryProducts, totalPrice)
+                new BrandLowestPriceProductResponse(brand.getName(), categoryProducts, Money.of(totalPrice))
         );
     }
 

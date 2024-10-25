@@ -6,6 +6,7 @@ import com.dphong.musinsa.RepositoryTest;
 import com.dphong.musinsa.domain.Brand;
 import com.dphong.musinsa.domain.Product;
 import com.dphong.musinsa.domain.ProductCategory;
+import com.dphong.musinsa.model.dto.Money;
 import com.dphong.musinsa.repository.product.ProductJpaRepository;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -48,27 +49,27 @@ class BrandRepositoryImplTest extends RepositoryTest {
         Brand brand1 = brandRepository.save(Brand.builder().name("브랜드1").build());
         productJpaRepository.saveAll(
                 List.of(
-                        Product.builder().price(3000).brand(brand1).category(ProductCategory.TOP).build(),
-                        Product.builder().price(3000).brand(brand1).category(ProductCategory.OUTERWEAR).build(),
-                        Product.builder().price(3000).brand(brand1).category(ProductCategory.PANTS).build()
+                        Product.builder().price(Money.of(3000)).brand(brand1).category(ProductCategory.TOP).build(),
+                        Product.builder().price(Money.of(3000)).brand(brand1).category(ProductCategory.OUTERWEAR).build(),
+                        Product.builder().price(Money.of(3000)).brand(brand1).category(ProductCategory.PANTS).build()
                 )
         ); // 총합이 9000
 
         Brand brand2 = brandRepository.save(Brand.builder().name("브랜드2").build());
         productJpaRepository.saveAll(
                 List.of(
-                        Product.builder().price(1000).brand(brand2).category(ProductCategory.TOP).build(),
-                        Product.builder().price(1000).brand(brand2).category(ProductCategory.OUTERWEAR).build(),
-                        Product.builder().price(1000).brand(brand2).category(ProductCategory.PANTS).build()
+                        Product.builder().price(Money.of(1000)).brand(brand2).category(ProductCategory.TOP).build(),
+                        Product.builder().price(Money.of(1000)).brand(brand2).category(ProductCategory.OUTERWEAR).build(),
+                        Product.builder().price(Money.of(1000)).brand(brand2).category(ProductCategory.PANTS).build()
                 )
         ); // 총합이 3000
 
         Brand brand3 = brandRepository.save(Brand.builder().name("브랜드3").build());
         productJpaRepository.saveAll(
                 List.of(
-                        Product.builder().price(2000).brand(brand3).category(ProductCategory.TOP).build(),
-                        Product.builder().price(2000).brand(brand3).category(ProductCategory.OUTERWEAR).build(),
-                        Product.builder().price(2000).brand(brand3).category(ProductCategory.PANTS).build()
+                        Product.builder().price(Money.of(2000)).brand(brand3).category(ProductCategory.TOP).build(),
+                        Product.builder().price(Money.of(2000)).brand(brand3).category(ProductCategory.OUTERWEAR).build(),
+                        Product.builder().price(Money.of(2000)).brand(brand3).category(ProductCategory.PANTS).build()
                 )
         ); // 총합이 6000
 

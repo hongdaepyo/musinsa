@@ -19,7 +19,14 @@ public class FakeProductRepository extends AbstractFakeRepository<Product> imple
     @Override
     public List<Product> findAllLowestPriceProductsByCategory() {
         return data.stream()
-                .collect(Collectors.groupingBy(Product::getCategory, Collectors.minBy(Comparator.comparingInt(Product::getPrice))))
+                .collect(
+                        Collectors.groupingBy(
+                                Product::getCategory,
+                                Collectors.minBy(
+                                        Comparator.comparingLong(product -> product.getPrice().amount())
+                                )
+                        )
+                )
                 .values().stream()
                 .filter(Optional::isPresent)
                 .map(Optional::get)
@@ -31,7 +38,7 @@ public class FakeProductRepository extends AbstractFakeRepository<Product> imple
     public Product findLowestPriceProductByCategory(ProductCategory category) {
         return data.stream()
                 .filter(product -> product.getCategory() == category)
-                .min(Comparator.comparingInt(Product::getPrice))
+                .min(Comparator.comparingLong(product -> product.getPrice().amount()))
                 .orElseThrow();
     }
 
@@ -39,7 +46,7 @@ public class FakeProductRepository extends AbstractFakeRepository<Product> imple
     public Product findHighestPriceProductByCategory(ProductCategory category) {
         return data.stream()
                 .filter(product -> product.getCategory() == category)
-                .max(Comparator.comparingInt(Product::getPrice))
+                .max(Comparator.comparingLong(product -> product.getPrice().amount()))
                 .orElseThrow();
     }
 

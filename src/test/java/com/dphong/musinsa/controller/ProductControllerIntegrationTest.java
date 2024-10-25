@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.dphong.musinsa.IntegrationTest;
 import com.dphong.musinsa.domain.Brand;
 import com.dphong.musinsa.domain.Product;
+import com.dphong.musinsa.model.dto.Money;
 import com.dphong.musinsa.model.request.product.ProductCreateRequest;
 import com.dphong.musinsa.model.request.product.ProductUpdateRequest;
 import com.dphong.musinsa.repository.brand.BrandRepository;
@@ -58,7 +59,7 @@ class ProductControllerIntegrationTest extends IntegrationTest {
     void 상품을_업데이트한다() throws Exception {
         // given
         Product product = productJpaRepository.save(
-                Product.builder().name("testProduct").category(TOP).brand(brand).price(100).build()
+                Product.builder().name("testProduct").category(TOP).brand(brand).price(Money.of(100)).build()
         );
         ProductUpdateRequest request = new ProductUpdateRequest("product1", TOP, 1000);
 
@@ -78,7 +79,7 @@ class ProductControllerIntegrationTest extends IntegrationTest {
     void 상품을_삭제한다() throws Exception {
         // given
         Product product = productJpaRepository.save(
-                Product.builder().name("testProduct").category(TOP).brand(brand).price(100).build()
+                Product.builder().name("testProduct").category(TOP).brand(brand).price(Money.of(100)).build()
         );
         // when
         // then

@@ -1,5 +1,7 @@
 package com.dphong.musinsa.domain;
 
+import com.dphong.musinsa.common.MoneyConverter;
+import com.dphong.musinsa.model.dto.Money;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -17,14 +19,16 @@ public class Product {
     private String name;
     @Enumerated(EnumType.STRING)
     private ProductCategory category;
-    private int price;
+
+    @Convert(converter = MoneyConverter.class)
+    private Money price;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "brandId")
     private Brand brand;
 
     @Builder
-    public Product(Long id, String name, ProductCategory category, int price, Brand brand) {
+    public Product(Long id, String name, ProductCategory category, Money price, Brand brand) {
         this.id = id;
         this.name = name;
         this.category = category;
@@ -32,7 +36,7 @@ public class Product {
         this.brand = brand;
     }
 
-    public void update(String name, ProductCategory category, int price) {
+    public void update(String name, ProductCategory category, Money price) {
         this.name = name;
         this.category = category;
         this.price = price;

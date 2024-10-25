@@ -5,7 +5,7 @@ import java.util.List;
 
 public record Products(List<Product> items) {
 
-    public int getSumOfPrices() {
-        return items.stream().mapToInt(Product::getPrice).sum();
+    public long getSumOfPrices() {
+        return items.stream().mapToLong(product -> product.getPrice().amount()).sum();
     }
 }

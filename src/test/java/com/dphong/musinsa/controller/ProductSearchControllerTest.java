@@ -6,16 +6,19 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.dphong.musinsa.model.dto.Money;
 import com.dphong.musinsa.model.response.product.*;
 import com.dphong.musinsa.service.ProductQueryService;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest(ProductSearchController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 class ProductSearchControllerTest {
 
     @Autowired
@@ -27,9 +30,9 @@ class ProductSearchControllerTest {
     @Test
     void 카테고리별_최저가_상품을_조회한다() throws Exception {
         // given
-        ProductResponse response = new ProductResponse(TOP.getDescription(), "product1", "brand", 1000);
+        ProductResponse response = new ProductResponse(TOP.getDescription(), "product1", "brand", Money.of(1000));
         given(productQueryService.getLowestPriceProducts()).willReturn(
-                new ProductsByCategoryResponse(List.of(response), 1000)
+                new ProductsByCategoryResponse(List.of(response), new Money(1000))
         );
 
         // when
@@ -38,7 +41,7 @@ class ProductSearchControllerTest {
                 .andExpectAll(
                         status().isOk(),
                         jsonPath("$.data.products[0].name").value("product1"),
-                        jsonPath("$.data.totalAmount").value(1000)
+                        jsonPath("$.data.totalAmount").value("1,000")
                 );
     }
 
@@ -48,8 +51,8 @@ class ProductSearchControllerTest {
         var response = new BrandProductWithLowestSumOfPricesResponse(
                 new BrandLowestPriceProductResponse(
                         "brandName",
-                        List.of(new CategoryProductResponse("categoryName", "productName", 1000)),
-                        1000
+                        List.of(new CategoryProductResponse("categoryName", "productName", Money.of(1000))),
+                        Money.of(1000)
                 )
         );
         given(productQueryService.getBrandProductsWithLowestPrice()).willReturn(response);
@@ -60,7 +63,7 @@ class ProductSearchControllerTest {
                 .andExpectAll(
                         status().isOk(),
                         jsonPath("$.data.lowestPrice.categories[0].categoryName").value("categoryName"),
-                        jsonPath("$.data.lowestPrice.totalAmount").value(1000)
+                        jsonPath("$.data.lowestPrice.totalAmount").value("1,000")
                 );
     }
 
@@ -70,8 +73,8 @@ class ProductSearchControllerTest {
         given(productQueryService.getProductsByCategory(TOP)).willReturn(
                 new ProductByCategoryNameResponse(
                         "상의",
-                        List.of(new BrandProductResponse("brandName1", 1000)),
-                        List.of(new BrandProductResponse("brandName2", 2000))
+                        List.of(new BrandProductResponse("brandName1", Money.of(1000))),
+                        List.of(new BrandProductResponse("brandName2", Money.of(2000)))
                 )
         );
 
@@ -85,9 +88,9 @@ class ProductSearchControllerTest {
                         status().isOk(),
                         jsonPath("$.data.categoryName").value("상의"),
                         jsonPath("$.data.lowestPrice[0].brandName").value("brandName1"),
-                        jsonPath("$.data.lowestPrice[0].price").value(1000),
+                        jsonPath("$.data.lowestPrice[0].price").value("1,000"),
                         jsonPath("$.data.highestPrice[0].brandName").value("brandName2"),
-                        jsonPath("$.data.highestPrice[0].price").value(2000)
+                        jsonPath("$.data.highestPrice[0].price").value("2,000")
                 );
     }
 }

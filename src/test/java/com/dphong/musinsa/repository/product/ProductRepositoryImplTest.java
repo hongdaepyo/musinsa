@@ -6,6 +6,7 @@ import com.dphong.musinsa.RepositoryTest;
 import com.dphong.musinsa.domain.Brand;
 import com.dphong.musinsa.domain.Product;
 import com.dphong.musinsa.domain.ProductCategory;
+import com.dphong.musinsa.model.dto.Money;
 import com.dphong.musinsa.repository.brand.BrandJpaRepository;
 import com.dphong.musinsa.repository.brand.BrandRepository;
 import com.dphong.musinsa.repository.brand.BrandRepositoryImpl;
@@ -37,7 +38,7 @@ class ProductRepositoryImplTest extends RepositoryTest {
     void 상품_아이디로_상품을_조회한다() {
         // given
         Product product = productRepository.save(
-                Product.builder().price(1000).name("product1").category(ProductCategory.TOP).build()
+                Product.builder().price(Money.of(1000)).name("product1").category(ProductCategory.TOP).build()
         );
         // when
 
@@ -52,12 +53,12 @@ class ProductRepositoryImplTest extends RepositoryTest {
         // given
         Brand brand = brandRepository.save(Brand.builder().name("brand").build());
         List.of(
-                Product.builder().price(1000).name("product1").category(ProductCategory.TOP).brand(brand).build(),
-                Product.builder().price(2000).name("product2").category(ProductCategory.TOP).brand(brand).build(),
-                Product.builder().price(3000).name("product3").category(ProductCategory.OUTERWEAR).brand(brand).build(),
-                Product.builder().price(4000).name("product4").category(ProductCategory.OUTERWEAR).brand(brand).build(),
-                Product.builder().price(6000).name("product5").category(ProductCategory.BAG).brand(brand).build(),
-                Product.builder().price(5000).name("product6").category(ProductCategory.BAG).brand(brand).build()
+                Product.builder().price(Money.of(1000)).name("product1").category(ProductCategory.TOP).brand(brand).build(),
+                Product.builder().price(Money.of(2000)).name("product2").category(ProductCategory.TOP).brand(brand).build(),
+                Product.builder().price(Money.of(3000)).name("product3").category(ProductCategory.OUTERWEAR).brand(brand).build(),
+                Product.builder().price(Money.of(4000)).name("product4").category(ProductCategory.OUTERWEAR).brand(brand).build(),
+                Product.builder().price(Money.of(6000)).name("product5").category(ProductCategory.BAG).brand(brand).build(),
+                Product.builder().price(Money.of(5000)).name("product6").category(ProductCategory.BAG).brand(brand).build()
         ).forEach(productRepository::save);
 
         // when
@@ -74,10 +75,10 @@ class ProductRepositoryImplTest extends RepositoryTest {
     void 카테고리의_최저가_상품을_조회한다() {
         // given
         List.of(
-                Product.builder().price(1000).name("product1").category(ProductCategory.TOP).build(),
-                Product.builder().price(2000).name("product2").category(ProductCategory.TOP).build(),
-                Product.builder().price(3000).name("product3").category(ProductCategory.HAT).build(),
-                Product.builder().price(4000).name("product4").category(ProductCategory.HAT).build()
+                Product.builder().price(Money.of(1000)).name("product1").category(ProductCategory.TOP).build(),
+                Product.builder().price(Money.of(2000)).name("product2").category(ProductCategory.TOP).build(),
+                Product.builder().price(Money.of(3000)).name("product3").category(ProductCategory.HAT).build(),
+                Product.builder().price(Money.of(4000)).name("product4").category(ProductCategory.HAT).build()
         ).forEach(productRepository::save);
 
         // when
@@ -86,17 +87,17 @@ class ProductRepositoryImplTest extends RepositoryTest {
         // then
         assertThat(product.getName()).isEqualTo("product1");
         assertThat(product.getCategory()).isEqualTo(ProductCategory.TOP);
-        assertThat(product.getPrice()).isEqualTo(1000);
+        assertThat(product.getPrice().amount()).isEqualTo(1000);
     }
 
     @Test
     void 카테고리의_최고가_상품을_조회한다() {
         // given
         List.of(
-                Product.builder().price(1000).name("product1").category(ProductCategory.TOP).build(),
-                Product.builder().price(2000).name("product2").category(ProductCategory.TOP).build(),
-                Product.builder().price(3000).name("product3").category(ProductCategory.HAT).build(),
-                Product.builder().price(4000).name("product4").category(ProductCategory.HAT).build()
+                Product.builder().price(Money.of(1000)).name("product1").category(ProductCategory.TOP).build(),
+                Product.builder().price(Money.of(2000)).name("product2").category(ProductCategory.TOP).build(),
+                Product.builder().price(Money.of(3000)).name("product3").category(ProductCategory.HAT).build(),
+                Product.builder().price(Money.of(4000)).name("product4").category(ProductCategory.HAT).build()
         ).forEach(productRepository::save);
 
         // when
@@ -105,14 +106,14 @@ class ProductRepositoryImplTest extends RepositoryTest {
         // then
         assertThat(product.getName()).isEqualTo("product4");
         assertThat(product.getCategory()).isEqualTo(ProductCategory.HAT);
-        assertThat(product.getPrice()).isEqualTo(4000);
+        assertThat(product.getPrice().amount()).isEqualTo(4000);
     }
 
     @Test
     void 상품을_삭제한다() {
         // given
         Product product = productRepository.save(
-                Product.builder().price(1000).name("product1").category(ProductCategory.TOP).build()
+                Product.builder().price(Money.of(1000)).name("product1").category(ProductCategory.TOP).build()
         );
 
         // when

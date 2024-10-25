@@ -4,6 +4,7 @@ import com.dphong.musinsa.common.exception.ResourceNotFoundException;
 import com.dphong.musinsa.domain.Brand;
 import com.dphong.musinsa.domain.Product;
 import com.dphong.musinsa.model.dto.CommonStatus;
+import com.dphong.musinsa.model.dto.Money;
 import com.dphong.musinsa.model.dto.ProductUpdateStatus;
 import com.dphong.musinsa.model.request.product.ProductCreateRequest;
 import com.dphong.musinsa.model.request.product.ProductUpdateRequest;
@@ -32,7 +33,7 @@ public class ProductService {
         Product product = productRepository.save(
                 Product.builder()
                         .name(request.name())
-                        .price(request.price())
+                        .price(Money.of(request.price()))
                         .category(request.category())
                         .brand(brand)
                         .build()
@@ -46,7 +47,7 @@ public class ProductService {
         if (product == null) {
             throw new ResourceNotFoundException("Product", id);
         }
-        product.update(request.name(), request.category(), request.price());
+        product.update(request.name(), request.category(), Money.of(request.price()));
         productRepository.save(product);
         return new ProductUpdateResponse(product.getId(), ProductUpdateStatus.SUCCESS);
     }
